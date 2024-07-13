@@ -17,17 +17,30 @@ services:
             - mysql_aps:/var/lib/mysql
         networks:
             - aps_network
-    
 
-    app:
+    api:
         build: .
-        container_name: aps-app
+        container_name: aps-api
         environment:
             DATABASE_URL: "mysql://root:dev@db:3306/apsDB"
             PORT: 3000
+        restart: on-failure
         ports:
             - 3000:3000
         depends_on:
+            - db
+        networks:
+            - aps_network
+
+    app:
+        build:
+            context: ./aps-ui/
+            dockerfile: Dockerfile
+        container_name: aps-app
+        ports:
+            - 5173:5173
+        depends_on:
+            - api
             - db
         networks:
             - aps_network
