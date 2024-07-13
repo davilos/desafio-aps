@@ -1,4 +1,5 @@
 import { makeCreateClienteUseCase } from "@/use-cases/clientes/factories/make-create-cliente-use-case";
+import { AlreadyExistsError } from "@/use-cases/errors/already-exists-error";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
 
@@ -25,6 +26,10 @@ export async function create(req: Request, res: Response, next: NextFunction) {
     const { cliente } = await useCase.execute(data);
     res.status(201).send(cliente);
   } catch (err) {
+    if (err instanceof AlreadyExistsError) {
+      return res.status(403).send({ error: err.message });
+    }
+
     next(err);
   }
 }

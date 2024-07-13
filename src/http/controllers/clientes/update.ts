@@ -1,4 +1,5 @@
 import { makeUpdateClienteUseCase } from "@/use-cases/clientes/factories/make-update-cliente-use-case";
+import { AlreadyExistsError } from "@/use-cases/errors/already-exists-error";
 import { NotFoundError } from "@/use-cases/errors/not-found-error";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
@@ -33,6 +34,9 @@ export async function update(req: Request, res: Response, next: NextFunction) {
   } catch (err) {
     if (err instanceof NotFoundError) {
       return res.status(404).send({ error: err.message });
+    }
+    if (err instanceof AlreadyExistsError) {
+      return res.status(403).send({ error: err.message });
     }
     next(err);
   }

@@ -1,6 +1,7 @@
 import { ClientesRepository } from "@/repositories/clientes-repository";
 import { cliente } from "@prisma/client";
 import { NotFoundError } from "../errors/not-found-error";
+import { AlreadyExistsError } from "../errors/already-exists-error";
 
 interface UpdateClienteUseCaseRequest {
   clienteId: number;
@@ -30,6 +31,14 @@ export class UpdateClienteUseCase {
     clienteId,
     data,
   }: UpdateClienteUseCaseRequest): Promise<UpdateClienteUseCaseResponse> {
+    const clienteAlreadyExists = await this.clientesRepository.findMany({
+      email: data.email,
+      telefone: data.telefone,
+    });
+
+    if (clienteAlreadyExists.length > 0)
+      throw new AlreadyExistsError("cliente");
+
     const cliente = await this.clientesRepository.update(clienteId, data);
 
     if (!cliente) throw new NotFoundError("cliente");
