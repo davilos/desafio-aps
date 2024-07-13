@@ -1,9 +1,9 @@
 import { PrismaClientesRepository } from "@/repositories/prisma/prisma-clientes-repository";
-import { GetClienteUseCase } from "../get-cliente";
+import { RemoveClienteUseCase } from "../remove-cliente";
 
-export function makeGetClienteUseCase() {
+export function makeRemoveClienteUseCase() {
   const repository = new PrismaClientesRepository();
-  const useCase = new GetClienteUseCase(repository);
+  const useCase = new RemoveClienteUseCase(repository);
 
   return useCase;
 }
