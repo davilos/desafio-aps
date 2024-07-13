@@ -30,8 +30,15 @@ export class PrismaClientesRepository implements ClientesRepository {
 
     return cliente;
   }
-  async findMany(): Promise<cliente[]> {
-    const clientes = await prisma.cliente.findMany();
+  async findMany(
+    data?: Prisma.clienteUncheckedUpdateInput
+  ): Promise<cliente[]> {
+    const clientes = await prisma.cliente.findMany({
+      where: {
+        email: data?.email ? data.email.toString() : undefined,
+        telefone: data?.telefone ? data.telefone.toString() : undefined,
+      },
+    });
 
     return clientes;
   }
