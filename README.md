@@ -1,4 +1,4 @@
-# Desafio da APS Tecnologia
+# Desafio da APS Informática
 
 ## Como rodar o projeto
 `docker compose up`
