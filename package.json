@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "start:prod": "node build/server.js",
+    "start:migrate:prod": "prisma migrate deploy && npm run start:prod"
   },
   "keywords": [],
   "author": "",
