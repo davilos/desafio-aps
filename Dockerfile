@@ -1,14 +1,23 @@
-FROM node
+FROM node:20 AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package*.json .
-RUN npm i
+COPY package*.json ./
+COPY prisma ./prisma/ 
+
+RUN npm install
 
 COPY . .
-RUN npx prisma generate
+
 RUN npm run build
+
+FROM node:20
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3000
 
-CMD [ "node", "build/server.js" ]
+CMD [ "npm", "run", "start:migrate:prod" ]
