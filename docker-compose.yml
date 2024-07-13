@@ -1,0 +1,33 @@
+volumes:
+  mysql_aps:
+
+networks:
+  aps_network:
+
+services:
+    db: 
+        image: mysql
+        container_name: mysql_aps
+        environment:
+            MYSQL_ROOT_PASSWORD: "dev"
+            MYSQL_DATABASE: "apsDB"
+        ports:
+            - 9003:3306
+        volumes:
+            - mysql_aps:/var/lib/mysql
+        networks:
+            - aps_network
+    
+
+    app:
+        build: .
+        container_name: aps-app
+        environment:
+            DATABASE_URL: "mysql://root:dev@db:3306/apsDB"
+            PORT: 3000
+        ports:
+            - 3000:3000
+        depends_on:
+            - db
+        networks:
+            - aps_network
