@@ -16,7 +16,7 @@ export async function update(req: Request, res: Response, next: NextFunction) {
       telefone: z.string().max(15),
       CNPJ: z.string().max(14).min(14),
       CEP: z.string().max(10).min(8),
-      logradouro: z.string().max(20),
+      logradouro: z.string().max(10),
       bairro: z.string().max(100),
       cidade: z.string().max(100),
       UF: z.string().max(2).min(2),

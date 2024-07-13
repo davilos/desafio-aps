@@ -9,6 +9,7 @@ import { update } from "./http/controllers/clientes/update";
 export const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 app.post("/clientes", (req: Request, res: Response, next: NextFunction) =>
   create(req, res, next)
