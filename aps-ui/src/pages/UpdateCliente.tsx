@@ -54,7 +54,7 @@ function UpdateCliente() {
         (cliente: { id: number }) => cliente.id === Number(clienteId)
       );
 
-      if (!clientes.length) navigate("/");
+      if (clientes.length === 0) navigate("/");
 
       setBairro(clientes[0].bairro);
       setCep(clientes[0].CEP);
