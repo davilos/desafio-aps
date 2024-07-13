@@ -36,7 +36,10 @@ export class UpdateClienteUseCase {
       telefone: data.telefone,
     });
 
-    if (clienteAlreadyExists.length > 0)
+    if (
+      clienteAlreadyExists.length > 0 &&
+      clienteAlreadyExists[0].id !== clienteId
+    )
       throw new AlreadyExistsError("cliente");
 
     const cliente = await this.clientesRepository.update(clienteId, data);
